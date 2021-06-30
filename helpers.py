@@ -30,7 +30,8 @@ def update_coinlogos():
 
             tree = html.fromstring(result.content)
 
-            ranking = tree.cssselect('tr > td')[7].text_content().strip()
+            stats = [ele.text_content().strip() for ele in tree.cssselect('tr > *')]
+            ranking = stats[stats.index('Market Cap Rank')+1]
 
             if ranking == 'N/A':
                 continue
