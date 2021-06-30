@@ -17,7 +17,7 @@ class CoinModel(db.Model):
 class AddressModel(db.Model):
     __tablename__ = "address"
     id = db.Column(db.String, primary_key=True)
-    parent_id = db.Column(db.String, db.ForeignKey("coin.id"))
+    parent_id = db.Column(db.String, db.ForeignKey("coin.id", ondelete="CASCADE"))
     network = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
 
