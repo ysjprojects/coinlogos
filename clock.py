@@ -12,7 +12,8 @@ def soft_update_coinlogos():
 
 @sched.scheduled_job('cron', day='last sun')
 def hard_update_coinlogos():
-    db.session.query(CoinModel).delete()
+    for coin in db.session.query(CoinModel).all():
+        db.session.delete(coin)
     update_coinlogos()
 
 
