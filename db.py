@@ -7,7 +7,7 @@ class CoinModel(db.Model):
     id = db.Column(db.String, primary_key = True)
     ticker = db.Column(db.String, nullable = False)
     logo = db.Column(db.String, nullable = False)
-    addresses = db.relationship("AddressModel")
+    addresses = db.relationship("AddressModel", cascade="all, delete, delete-orphan", backref="coin")
 
     def __repr__(self):
         return f"Coin(id={self.id}, ticker={self.ticker}, imgurl={self.logo})"
