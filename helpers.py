@@ -14,7 +14,6 @@ def update_coinlogos():
     for coin in response.json():
 
         try:
-        
             coin_id = coin['id']
             coin_ticker = coin['symbol'].upper()
             coin_logo = None
