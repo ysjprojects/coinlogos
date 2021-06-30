@@ -12,65 +12,68 @@ def update_coinlogos():
     
 
     for coin in response.json():
-        
-        coin_id = coin['id']
-        coin_ticker = coin['symbol'].upper()
-        coin_logo = None
 
-        existing_entry = CoinModel.query.filter_by(id=coin_id).first()
-        if existing_entry:
-            continue
-
-    
         try:
+        
+            coin_id = coin['id']
+            coin_ticker = coin['symbol'].upper()
+            coin_logo = None
+
+            existing_entry = CoinModel.query.filter_by(id=coin_id).first()
+            
+            if existing_entry:
+                continue
+
+        
+            
             result = requests.get(f'https://www.coingecko.com/en/coins/{coin_id}')
+
+            tree = html.fromstring(result.content)
+
+            ranking = tree.cssselect('tr > td')[7].text_content().strip()
+
+            if ranking == 'N/A':
+                continue
+            
+            coin_logo = tree.cssselect('div.mt-3 > div > div > img')[0].get('src')
+            
+            if not coin_logo:
+                continue
+
+            
+            addresses=[]
+            platforms = coin['platforms']
+            if platforms != {}:
+                for k, v in platforms.items():
+                    if v == "":
+                        continue
+                    else:
+                        addresses.append({"network":k,"address":v})
+            
+            entry = {"id": coin_id, 
+                    "ticker": coin_ticker, 
+                    "logo": coin_logo,
+                    "addresses":addresses}
+            
+
+            try:
+                data = schema.load(entry)
+            except ValidationError as err:
+                print(err.messages)
+                continue
+
+            coin = CoinModel(id=data['id'], ticker=data['ticker'], logo = data['logo'])
+
+            for addr in data['addresses']:
+                network = addr['network']
+                address = addr['address']
+                coin.addresses.append(AddressModel(id=f'{network}{address}', network=network, address=address))
+
+
+            db.session.add(coin)
+            db.session.commit()
+            print(entry)
         except:
             continue
-
-        tree = html.fromstring(result.content)
-
-        ranking = tree.cssselect('tr > td')[7].text_content().strip()
-
-        if ranking == 'N/A':
-            continue
-        
-        coin_logo = tree.cssselect('div.mt-3 > div > div > img')[0].get('src')
-        
-        if not coin_logo:
-            continue
-
-        
-        addresses=[]
-        platforms = coin['platforms']
-        if platforms != {}:
-            for k, v in platforms.items():
-                if v == "":
-                    continue
-                else:
-                    addresses.append({"network":k,"address":v})
-        
-        entry = {"id": coin_id, 
-                "ticker": coin_ticker, 
-                "logo": coin_logo,
-                "addresses":addresses}
-        
-        print(entry)
-
-        try:
-            data = schema.load(entry)
-        except ValidationError as err:
-            print(err.messages)
-            continue
-
-        coin = CoinModel(id=data['id'], ticker=data['ticker'], logo = data['logo'])
-
-        for addr in data['addresses']:
-            network = addr['network']
-            address = addr['address']
-            coin.addresses.append(AddressModel(id=f'{network}{address}', network=network, address=address))
-
-
-        db.session.add(coin)
-        db.session.commit()
     
     return True
