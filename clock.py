@@ -1,4 +1,4 @@
-from helpers import update_coinlogos
+from helpers import clear_tables, update_coinlogos
 from db import db, CoinModel
 
 from apscheduler.schedulers.blocking import BlockingScheduler
@@ -12,8 +12,7 @@ def soft_update_coinlogos():
 
 @sched.scheduled_job('cron', day='last sun')
 def hard_update_coinlogos():
-    for coin in db.session.query(CoinModel).all():
-        db.session.delete(coin)
+    clear_tables()
     update_coinlogos()
 
 

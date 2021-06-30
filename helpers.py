@@ -78,3 +78,8 @@ def update_coinlogos():
             continue
     
     return True
+
+def clear_tables():
+    for coin in db.session.query(CoinModel).all():
+        db.session.delete(coin)
+
