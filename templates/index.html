@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="main-img-div">
+        <img class="main-img" src="{{ url_for('static', filename='img/coinlogos.png') }}"/>
+    </div>
+    <div class="text-center">
+        <h1 class='text-center'>{% block title %}Coinlogos{% endblock %}</h1>
+        <h3 class='text-center'><i>kekapi</i></h3>
+    </div>
+    <div class="introduction">
+        <h4><b>Introduction</b></h4>
+        <p>While Coingecko API offers a robust trove of cryptocurrency data, one thing that it lacks is the ability to query cryptocurrency logos. Existing
+            solutions are often outdated, limited in terms of scope or lacking versatility in querying methods.
+            <br>
+            Coinlogos is unique as it allows users to query cryptocurrency logos using contract address and ticker (if any), besides the conventional coin identifier used in Coingecko.
+            The database also keeps itself up to date with new coins by querying the Coingecko API endpoint once every 24 hours. 
+        </p>   
+    </div>
+
+    <div class="api-endpoints">
+        <h4><b>API Endpoints</b></h4>
+        <div class="margin-bottom-15">
+            <div>
+                <p class="api-endpoint-description">Get list of coins</p>
+                
+            </div>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div style="width:75px" type="button" class="btn btn-success"><b>GET</b></div>
+
+                    <span class="api-url"><b>/coins</b> </span>
+                </div>
+            </div>
+        </div>
+        <div class="margin-bottom-15">
+            <div>
+                <p class="api-endpoint-description">Get list of networks</p>
+                
+            </div>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div style="width:75px" type="button" class="btn btn-success"><b>GET</b></div>
+
+                    <span class="api-url"><b>/networks</b> </span>
+                </div>
+            </div>
+        </div>
+        <div class="margin-bottom-15">
+            <div>
+                <p class="api-endpoint-description">Get list of coins in the same network</p>
+                
+            </div>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div style="width:75px" type="button" class="btn btn-success"><b>GET</b></div>
+
+                    <span class="api-url"><b>/coins/network/{network}</b> </span>
+                </div>
+            </div>
+        </div>
+        <div class="margin-bottom-15">
+            <div>
+                <p class="api-endpoint-description">Get list of coins with the same tickers</p>
+                
+            </div>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div style="width:75px" type="button" class="btn btn-success"><b>GET</b></div>
+
+                    <span class="api-url"><b>/coins/ticker/{ticker}</b> </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="margin-bottom-15">
+            <div>
+                <p class="api-endpoint-description">Get coin by id</p>
+                
+            </div>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div style="width:75px" type="button" class="btn btn-success"><b>GET</b></div>
+
+                    <span class="api-url"><b>/coin/id/{coin_id}</b> </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="margin-bottom-15">
+            <div>
+                <p class="api-endpoint-description">Get coin by contract address (specifying the network)</p>
+                
+            </div>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div style="width:75px" type="button" class="btn btn-success"><b>GET</b></div>
+
+                    <span class="api-url"><b>/coin/address/{network}/{address}</b> </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="margin-bottom-15">
+            <div>
+                <p class="api-endpoint-description">Get first coin with matching ticker</p>
+                
+            </div>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <div style="width:75px" type="button" class="btn btn-success"><b>GET</b></div>
+
+                    <span class="api-url"><b>/coin/ticker/{ticker}</b> </span>
+                </div>
+            </div>
+        </div>
+
+        <p>* replace texts in curly braces &#123&#123&#125&#125 with the relevant parameters</p>
+        <p>* base url is the current url of this page</p>
+
+
+        
+        
+    </div>
+    
+
+
+{% endblock %}
