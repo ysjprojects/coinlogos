@@ -74,3 +74,4 @@ def hard_update_coinlogos():
     update_coinlogos()
 
 
+sched.start()
