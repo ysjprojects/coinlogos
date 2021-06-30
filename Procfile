@@ -1,3 +1,3 @@
 web: gunicorn app:app
-clock: python helpers.py
+clock: python clock.py
 

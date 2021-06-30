@@ -4,11 +4,6 @@ from db import db, CoinModel,AddressModel
 from app import CoinSchema
 from marshmallow import ValidationError
 
-from apscheduler.schedulers.blocking import BlockingScheduler
-
-sched = BlockingScheduler()
-
-@sched.scheduled_job('interval', hours=6)
 def update_coinlogos():
     schema = CoinSchema()
 
@@ -16,7 +11,7 @@ def update_coinlogos():
 
     
 
-    for coin in response.json()[:20]:
+    for coin in response.json():
         
         coin_id = coin['id']
         coin_ticker = coin['symbol'].upper()
@@ -66,12 +61,3 @@ def update_coinlogos():
         db.session.commit()
     
     return True
-
-
-@sched.scheduled_job('cron', day='last sun')
-def hard_update_coinlogos():
-    db.session.query(CoinModel).delete()
-    update_coinlogos()
-
-
-sched.start()
