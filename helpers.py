@@ -21,11 +21,24 @@ def update_coinlogos():
         if existing_entry:
             continue
 
-        result = requests.get(f'https://www.coingecko.com/en/coins/{coin_id}')
+    
+        try:
+            result = requests.get(f'https://www.coingecko.com/en/coins/{coin_id}')
+        except:
+            continue
+
         tree = html.fromstring(result.content)
+
+        ranking = tree.cssselect('tr > td')[7].text_content().strip()
+
+        if ranking == 'N/A':
+            continue
+        
         coin_logo = tree.cssselect('div.mt-3 > div > div > img')[0].get('src')
+        
         if not coin_logo:
             continue
+
         
         addresses=[]
         platforms = coin['platforms']
